@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/recipeListFragment">
+
+    <fragment
+        android:id="@+id/recipeListFragment"
+        android:name="com.example.fitness.ui.screens.RecipeListFragment"
+        android:label="Recipe List"
+        tools:layout="@layout/fragment_recipe_list">
+        <action
+            android:id="@+id/action_recipeListFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/recipeDetailFragment"
+        android:name="com.example.fitness.ui.screens.RecipeDetailFragment"
+        android:label="Recipe Detail"
+        tools:layout="@layout/fragment_recipe_detail">
+        <argument
+            android:name="recipeId"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ingredientListFragment"
+        android:name="com.example.fitness.ui.screens.IngredientListFragment"
+        android:label="Ingredient List"
+        tools:layout="@layout/fragment_ingredient_list" />
+</navigation>
