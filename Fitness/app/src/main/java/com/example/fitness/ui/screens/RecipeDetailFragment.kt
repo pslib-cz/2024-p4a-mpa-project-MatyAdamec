@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.fitness.Data.AppDatabase
 import com.example.fitness.R
 import com.example.fitness.databinding.FragmentRecipeDetailBinding
@@ -68,6 +69,32 @@ class RecipeDetailFragment : Fragment() {
                 }
             }
         }
+
+        binding.deleteRecipeButton.setOnClickListener {
+            if (recipeId != -1L) {
+                // Potvrzení vymazání
+                confirmDeleteRecipe(recipeId)
+            } else {
+                Toast.makeText(requireContext(), "Neplatný ID receptu", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun confirmDeleteRecipe(recipeId: Long) {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        builder.setTitle("Vymazat Recept")
+        builder.setMessage("Opravdu chcete vymazat tento recept?")
+        builder.setPositiveButton("Ano") { dialog, _ ->
+            viewModel.deleteRecipe(recipeId)
+            Toast.makeText(requireContext(), "Recept vymazán", Toast.LENGTH_SHORT).show()
+            findNavController().navigateUp()
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("Ne") { dialog, _ ->
+            // Zrušení akce
+            dialog.dismiss()
+        }
+        builder.create().show()
     }
 
     override fun onDestroyView() {

@@ -24,6 +24,12 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
         return recipeDao.getAllIngredients()
     }
 
+    suspend fun deleteRecipe(recipeId: Long) {
+        recipeDao.deleteRecipeIngredientCrossRefs(recipeId)
+        recipeDao.deleteRecipeById(recipeId)
+    }
+
+
     suspend fun searchRecipes(query: String): List<Recipe> {
         val searchQuery = "%$query%"
         val recipesWithIngredients = recipeDao.searchRecipesWithIngredients(searchQuery)

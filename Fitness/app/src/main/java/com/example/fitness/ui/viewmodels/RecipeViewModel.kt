@@ -48,4 +48,12 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
             }
         }
     }
+
+    fun deleteRecipe(recipeId: Long) {
+        viewModelScope.launch {
+            repository.deleteRecipe(recipeId)
+            Log.d("RecipeViewModel", "Deleted recipe with ID: $recipeId")
+            loadRecipes()
+        }
+    }
 }

@@ -58,7 +58,11 @@ class RecipeListFragment : Fragment() {
 
         // Nastavení kliknutí na položku seznamu
         binding.listView.setOnItemClickListener { _, _, position, _ ->
-            val selectedRecipe = viewModel.recipes.value[position]
+            val selectedRecipe = if (binding.searchView.query.isNullOrEmpty()) {
+                viewModel.recipes.value[position]
+            } else {
+                viewModel.searchResults.value[position]
+            }
             Toast.makeText(requireContext(), "Kliknuto na ${selectedRecipe.name}", Toast.LENGTH_SHORT).show()
 
             // Vytvoření bundle a navigace

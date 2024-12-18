@@ -33,4 +33,10 @@ interface RecipeDao {
     @Query("SELECT * FROM recipes WHERE name LIKE :searchQuery")
     suspend fun searchRecipesWithIngredients(searchQuery: String): List<RecipeWithIngredients>
 
+    @Transaction
+    @Query("DELETE FROM recipes WHERE recipeId = :id")
+    suspend fun deleteRecipeById(id: Long)
+
+    @Query("DELETE FROM recipe_ingredient_cross_ref WHERE recipeId = :id")
+    suspend fun deleteRecipeIngredientCrossRefs(id: Long)
 }
