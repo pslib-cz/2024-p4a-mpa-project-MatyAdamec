@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -38,6 +39,8 @@ class RecipeListFragment : Fragment() {
         }
     }
 
+    private lateinit var adapter: ArrayAdapter<String>
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentRecipeListBinding.inflate(inflater, container, false)
         return binding.root
@@ -50,14 +53,13 @@ class RecipeListFragment : Fragment() {
         viewModel.loadRecipes()
 
         // Vytvoření adapteru pro ListView
-        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, mutableListOf())
+        adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, mutableListOf())
         binding.listView.adapter = adapter
 
         // Nastavení kliknutí na položku seznamu
         binding.listView.setOnItemClickListener { _, _, position, _ ->
             val selectedRecipe = viewModel.recipes.value[position]
-            Log.d("RecipeListFragment", "Clicked on recipe: ${selectedRecipe.name}")
-            Toast.makeText(requireContext(), "Clicked on ${selectedRecipe.name}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Kliknuto na ${selectedRecipe.name}", Toast.LENGTH_SHORT).show()
 
             // Vytvoření bundle a navigace
             val bundle = Bundle().apply {
@@ -66,17 +68,29 @@ class RecipeListFragment : Fragment() {
             findNavController().navigate(R.id.action_recipeListFragment_to_recipeDetailFragment, bundle)
         }
 
-        // Pozorování změn v receptech
+        // Nastavení SearchView pro vyhledávání receptů
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // Volání metody pro vyhledávání receptů ve ViewModelu
+                viewModel.searchRecipes(newText ?: "")
+                return true
+            }
+        })
+
+        // Pozorování výsledků vyhledávání
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.recipes.collectLatest { recipeList ->
+            viewModel.searchResults.collectLatest { searchList ->
                 adapter.clear()
-                adapter.addAll(recipeList.map { it.name })
+                adapter.addAll(searchList.map { it.name })
                 adapter.notifyDataSetChanged()
-                Log.d("RecipeListFragment", "Recipe list updated: ${recipeList.size} items")
+                Log.d("RecipeListFragment", "Search results updated: ${searchList.size} items")
             }
         }
-
         // Vložení ukázkových dat při prvním spuštění
+        /*
         viewLifecycleOwner.lifecycleScope.launch {
             if (viewModel.recipes.value.isEmpty()) {
                 Log.d("RecipeListFragment", "Inserting sample data")
@@ -84,6 +98,7 @@ class RecipeListFragment : Fragment() {
                 viewModel.loadRecipes()
             }
         }
+        */
     }
 
     override fun onDestroyView() {

@@ -21,11 +21,13 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
     }
 
     suspend fun getAllIngredients(): List<Ingredient> {
-        // Zde byste museli mít metodu v DAO pro získání všech ingrediencí.
-        // Přidejme si ji do RecipeDao:
-        // @Query("SELECT * FROM ingredients")
-        // suspend fun getAllIngredients(): List<Ingredient>
         return recipeDao.getAllIngredients()
+    }
+
+    suspend fun searchRecipes(query: String): List<Recipe> {
+        val searchQuery = "%$query%"
+        val recipesWithIngredients = recipeDao.searchRecipesWithIngredients(searchQuery)
+        return recipesWithIngredients.map { it.recipe }
     }
 
     suspend fun insertSampleData() {
@@ -83,9 +85,11 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
     }
 
     private suspend fun insertIngredientsForRecipe(recipeId: Long, ingredients: List<String>) {
+
         for (ingredientName in ingredients) {
             val ingredientId = recipeDao.insertIngredient(Ingredient(name = ingredientName))
             recipeDao.insertRecipeIngredientCrossRef(RecipeIngredientCrossRef(recipeId, ingredientId))
         }
+
     }
 }

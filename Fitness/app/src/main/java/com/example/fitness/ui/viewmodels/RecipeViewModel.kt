@@ -1,5 +1,6 @@
 package com.example.fitness.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitness.repository.RecipeRepository
@@ -11,15 +12,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
-    private val _recipes = MutableStateFlow<List<com.example.fitness.Data.entities.Recipe>>(emptyList())
-    val recipes: StateFlow<List<com.example.fitness.Data.entities.Recipe>> = _recipes
+    private val _recipes = MutableStateFlow<List<Recipe>>(emptyList())
+    val recipes: StateFlow<List<Recipe>> = _recipes
 
     private val _selectedRecipe = MutableStateFlow<RecipeWithIngredients?>(null)
     val selectedRecipe: StateFlow<RecipeWithIngredients?> = _selectedRecipe
 
+    private val _searchResults = MutableStateFlow<List<Recipe>>(emptyList())
+    val searchResults: StateFlow<List<Recipe>> = _searchResults
+
     fun loadRecipes() {
         viewModelScope.launch {
             val data = repository.getAllRecipes()
+            _searchResults.value = data
             _recipes.value = data
         }
     }
@@ -28,6 +33,19 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
         viewModelScope.launch {
             val recipe = repository.getRecipeWithIngredients(recipeId)
             _selectedRecipe.value = recipe
+        }
+    }
+
+    fun searchRecipes(query: String) {
+        viewModelScope.launch {
+            Log.d("RecipeListFragment", "query: $query isBlank: , ${query.isNotBlank()}")
+            if (query.isNotBlank()) {
+                val results = repository.searchRecipes(query)
+                _searchResults.value = results
+            } else {
+                Log.d("RecipeListFragment", "loaded all")
+                loadRecipes()
+            }
         }
     }
 }

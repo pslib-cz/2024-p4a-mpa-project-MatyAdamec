@@ -29,9 +29,4 @@
             app:argType="long" />
     </fragment>
 
-    <fragment
-        android:id="@+id/ingredientListFragment"
-        android:name="com.example.fitness.ui.screens.IngredientListFragment"
-        android:label="Ingredient List"
-        tools:layout="@layout/fragment_ingredient_list" />
 </navigation>

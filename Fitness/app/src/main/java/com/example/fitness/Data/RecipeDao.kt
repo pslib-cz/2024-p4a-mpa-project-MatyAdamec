@@ -28,4 +28,9 @@ interface RecipeDao {
     @Transaction
     @Query("SELECT * FROM ingredients")
     suspend fun getAllIngredients(): List<Ingredient>
+
+    @Transaction
+    @Query("SELECT * FROM recipes WHERE name LIKE :searchQuery")
+    suspend fun searchRecipesWithIngredients(searchQuery: String): List<RecipeWithIngredients>
+
 }
