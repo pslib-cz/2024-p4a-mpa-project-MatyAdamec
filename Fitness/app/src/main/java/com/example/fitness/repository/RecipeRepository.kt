@@ -20,7 +20,8 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
     }
 
     suspend fun getAllIngredients(): List<Ingredient> {
-        return recipeDao.getAllIngredients()
+        val allIngredients = recipeDao.getAllIngredients()
+        return allIngredients.distinctBy { it.name }
     }
 
     suspend fun deleteRecipe(recipeId: Long) {
@@ -65,6 +66,22 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
 
         return emptyList()
     }
+
+    suspend fun insertRecipe(recipe: Recipe, ingredients: List<String>) {
+        val recipeId = recipeDao.insertRecipe(recipe)
+
+        for (ingredientName in ingredients) {
+            val existingIngredients = recipeDao.getAllIngredients().filter { it.name.equals(ingredientName, ignoreCase = true) }
+            val ingredientId = if (existingIngredients.isNotEmpty()) {
+                existingIngredients.first().ingredientId
+            } else {
+                recipeDao.insertIngredient(Ingredient(name = ingredientName))
+            }
+
+            recipeDao.insertRecipeIngredientCrossRef(RecipeIngredientCrossRef(recipeId, ingredientId))
+        }
+    }
+
 
     suspend fun insertSampleData() {
         // Vložení ukázkových dat (10 receptů)

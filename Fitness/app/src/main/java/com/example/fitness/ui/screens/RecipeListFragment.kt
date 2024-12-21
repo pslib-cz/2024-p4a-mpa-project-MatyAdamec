@@ -12,9 +12,12 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.fitness.R
 import com.example.fitness.Data.AppDatabase
+import com.example.fitness.Data.entities.Recipe
+import com.example.fitness.databinding.DialogAddRecipeBinding
 import com.example.fitness.databinding.FragmentRecipeListBinding
 import com.example.fitness.repository.RecipeRepository
 import com.example.fitness.ui.viewmodels.RecipeViewModel
@@ -81,6 +84,12 @@ class RecipeListFragment : Fragment() {
                 return true
             }
         })
+
+
+        // Nastavení FloatingActionButton pro přidání nového receptu
+        binding.addRecipeFab.setOnClickListener {
+            showAddRecipeDialog()
+        }
 
         binding.filterButton.setOnClickListener {
             showFilterDialog()
@@ -183,6 +192,49 @@ class RecipeListFragment : Fragment() {
         }
     }
 
+    private fun showAddRecipeDialog() {
+        val dialogBinding = DialogAddRecipeBinding.inflate(LayoutInflater.from(context))
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("Přidat nový recept")
+            .setView(dialogBinding.root)
+            .setPositiveButton("Přidat") { dialogInterface, _ ->
+                val recipeName = dialogBinding.recipeNameEditText.text.toString().trim()
+                val recipeDescription = dialogBinding.recipeDescriptionEditText.text.toString().trim()
+                val recipeIngredientsInput = dialogBinding.recipeIngredientsEditText.text.toString().trim()
+
+                if (recipeName.isEmpty()) {
+                    Toast.makeText(requireContext(), "Název receptu je povinný.", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+
+                if (recipeIngredientsInput.isEmpty()) {
+                    Toast.makeText(requireContext(), "Ingredience jsou povinné.", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+
+                val ingredients = recipeIngredientsInput.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+
+                val newRecipe = Recipe(
+                    name = recipeName,
+                    description = recipeDescription
+                )
+
+                viewModel.viewModelScope.launch {
+                    repository.insertRecipe(newRecipe, ingredients)
+                    viewModel.loadRecipes()
+                    Toast.makeText(requireContext(), "Recept přidán.", Toast.LENGTH_SHORT).show()
+                }
+
+                dialogInterface.dismiss()
+            }
+            .setNegativeButton("Zrušit") { dialogInterface, _ ->
+                dialogInterface.dismiss()
+            }
+            .create()
+
+        dialog.show()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
