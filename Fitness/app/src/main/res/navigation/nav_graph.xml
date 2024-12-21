@@ -17,6 +17,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_recipeListFragment_to_recipeRandomFragment"
+            app:destination="@id/recipeRandomFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -28,5 +35,16 @@
             android:name="recipeId"
             app:argType="long" />
     </fragment>
+
+    <fragment
+        android:id="@+id/recipeRandomFragment"
+        android:name="com.example.fitness.ui.screens.RecipeRandomFragment"
+        android:label="Recipe Random"
+        tools:layout="@layout/fragment_recipe_random">
+        <argument
+            android:name="recipeId"
+            app:argType="long" />
+    </fragment>
+
 
 </navigation>

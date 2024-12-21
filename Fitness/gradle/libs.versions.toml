@@ -1,6 +1,8 @@
 [versions]
 agp = "8.7.0"
+converterGson = "2.9.0"
 fragmentKtxVersion = "1.6.1"
+glide = "4.12.0"
 kotlin = "1.9.24"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -25,7 +27,9 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "roomCommon" }
 androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
 
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtxVersion" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -34,6 +38,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "converterGson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

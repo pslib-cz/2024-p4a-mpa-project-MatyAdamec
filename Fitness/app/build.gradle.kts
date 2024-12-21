@@ -65,4 +65,10 @@ dependencies {
     // Optional: Testing (pokud budete chtít)
     testImplementation(libs.androidx.room.testing)
 
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    implementation(libs.glide)
+
+
 }

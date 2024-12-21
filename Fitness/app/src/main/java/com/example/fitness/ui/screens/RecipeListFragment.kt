@@ -94,6 +94,10 @@ class RecipeListFragment : Fragment() {
         binding.filterButton.setOnClickListener {
             showFilterDialog()
         }
+        binding.goToRandomRecipes.setOnClickListener {
+            findNavController().navigate(R.id.action_recipeListFragment_to_recipeRandomFragment)
+        }
+
         // Pozorování vybraných ingrediencí
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.selectedIngredients.collectLatest { selectedIngredients ->
