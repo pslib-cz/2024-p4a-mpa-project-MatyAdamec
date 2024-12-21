@@ -81,7 +81,22 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
             recipeDao.insertRecipeIngredientCrossRef(RecipeIngredientCrossRef(recipeId, ingredientId))
         }
     }
+    suspend fun updateRecipe(recipe: Recipe, ingredients: List<String>) {
+        recipeDao.updateRecipe(recipe)
 
+        recipeDao.deleteRecipeIngredientCrossRefs(recipe.recipeId)
+
+        for (ingredientName in ingredients) {
+            val existingIngredients = recipeDao.getAllIngredients().filter { it.name.equals(ingredientName, ignoreCase = true) }
+            val ingredientId = if (existingIngredients.isNotEmpty()) {
+                existingIngredients.first().ingredientId
+            } else {
+                recipeDao.insertIngredient(Ingredient(name = ingredientName))
+            }
+
+            recipeDao.insertRecipeIngredientCrossRef(RecipeIngredientCrossRef(recipe.recipeId, ingredientId))
+        }
+    }
 
     suspend fun insertSampleData() {
         // Vložení ukázkových dat (10 receptů)

@@ -17,6 +17,9 @@ interface RecipeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipeIngredientCrossRef(ref: RecipeIngredientCrossRef)
 
+    @Update
+    suspend fun updateRecipe(recipe: Recipe)
+
     @Transaction
     @Query("SELECT * FROM recipes WHERE recipeId = :id")
     suspend fun getRecipeWithIngredients(id: Long): RecipeWithIngredients?

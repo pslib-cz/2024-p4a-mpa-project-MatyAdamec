@@ -42,5 +42,13 @@
             android:backgroundTint="@color/design_default_color_error"
             android:textColor="@android:color/white"/>
 
+        <Button
+            android:id="@+id/editRecipeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upravit Recept"
+            android:backgroundTint="@color/design_default_color_primary"
+            android:textColor="@android:color/white" />
+
     </LinearLayout>
 </ScrollView>

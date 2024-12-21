@@ -220,11 +220,7 @@ class RecipeListFragment : Fragment() {
                     description = recipeDescription
                 )
 
-                viewModel.viewModelScope.launch {
-                    repository.insertRecipe(newRecipe, ingredients)
-                    viewModel.loadRecipes()
-                    Toast.makeText(requireContext(), "Recept přidán.", Toast.LENGTH_SHORT).show()
-                }
+                viewModel.addRecipe(newRecipe,ingredients);
 
                 dialogInterface.dismiss()
             }

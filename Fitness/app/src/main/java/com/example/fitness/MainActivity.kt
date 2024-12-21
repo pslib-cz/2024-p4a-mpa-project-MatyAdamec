@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         // Ukázka použití v coroutine
         lifecycleScope.launch {
-            val recipeId = db.recipeDao()
+            /*val recipeId = db.recipeDao()
                 .insertRecipe(Recipe(name = "Bábovka", description = "Tradiční bábovka"))
             val flourId = db.recipeDao().insertIngredient(Ingredient(name = "Mouka"))
             val sugarId = db.recipeDao().insertIngredient(Ingredient(name = "Cukr"))
@@ -49,7 +49,8 @@ class MainActivity : AppCompatActivity() {
 
             // Nyní můžeme načíst recept s ingrediencemi
             val recipeWithIngredients = db.recipeDao().getRecipeWithIngredients(recipeId)
-            // Např.:
+*/
+        // Např.:
             // Log.d("MainActivity", "Recept: ${recipeWithIngredients?.recipe?.name}")
             // Log.d("MainActivity", "Ingredience: ${recipeWithIngredients?.ingredients?.joinToString { it.name }}")
         }

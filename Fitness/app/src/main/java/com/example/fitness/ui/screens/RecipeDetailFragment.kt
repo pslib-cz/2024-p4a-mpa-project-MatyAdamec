@@ -10,9 +10,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.fitness.Data.AppDatabase
 import com.example.fitness.R
+import com.example.fitness.databinding.DialogEditRecipeBinding
 import com.example.fitness.databinding.FragmentRecipeDetailBinding
 import com.example.fitness.repository.RecipeRepository
 import com.example.fitness.ui.viewmodels.RecipeViewModel
@@ -78,6 +80,14 @@ class RecipeDetailFragment : Fragment() {
                 Toast.makeText(requireContext(), "Neplatný ID receptu", Toast.LENGTH_SHORT).show()
             }
         }
+
+        binding.editRecipeButton.setOnClickListener {
+            if (recipeId != -1L) {
+                showEditRecipeDialog(recipeId)
+            } else {
+                Toast.makeText(requireContext(), "Neplatný ID receptu", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun confirmDeleteRecipe(recipeId: Long) {
@@ -96,6 +106,70 @@ class RecipeDetailFragment : Fragment() {
         }
         builder.create().show()
     }
+
+
+    private fun showEditRecipeDialog(recipeId: Long) {
+        // Vytvoření bindingu pro dialog
+        val dialogBinding = DialogEditRecipeBinding.inflate(LayoutInflater.from(context))
+
+        // Naplnění aktuálními daty receptu
+        viewLifecycleOwner.lifecycleScope.launch {
+            val recipeWithIngredients = viewModel.selectedRecipe.value
+            if (recipeWithIngredients != null) {
+                dialogBinding.editRecipeNameEditText.setText(recipeWithIngredients.recipe.name)
+                dialogBinding.editRecipeDescriptionEditText.setText(recipeWithIngredients.recipe.description)
+                dialogBinding.editRecipeIngredientsEditText.setText(
+                    recipeWithIngredients.ingredients.joinToString(", ") { it.name }
+                )
+            }
+        }
+
+        // Vytvoření AlertDialog s vlastním layoutem
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle("Upravit Recept")
+            .setView(dialogBinding.root)
+            .setPositiveButton("Upravit") { dialogInterface, _ ->
+                // Získání textu z input fieldů
+                val recipeName = dialogBinding.editRecipeNameEditText.text.toString().trim()
+                val recipeDescription = dialogBinding.editRecipeDescriptionEditText.text.toString().trim()
+                val recipeIngredientsInput = dialogBinding.editRecipeIngredientsEditText.text.toString().trim()
+
+                // Validace vstupů
+                if (recipeName.isEmpty()) {
+                    Toast.makeText(requireContext(), "Název receptu je povinný.", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+
+                if (recipeIngredientsInput.isEmpty()) {
+                    Toast.makeText(requireContext(), "Ingredience jsou povinné.", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+
+                // Rozdělení ingrediencí podle čárky a odstranění mezer
+                val ingredients = recipeIngredientsInput.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+
+                // Vytvoření aktualizovaného Recipe objektu
+                val updatedRecipe = com.example.fitness.Data.entities.Recipe(
+                    recipeId = recipeId,
+                    name = recipeName,
+                    description = recipeDescription
+                )
+
+                // Aktualizace receptu v databázi
+                viewModel.updateRecipe(updatedRecipe, ingredients)
+
+                Toast.makeText(requireContext(), "Recept upraven.", Toast.LENGTH_SHORT).show()
+
+                dialogInterface.dismiss()
+            }
+            .setNegativeButton("Zrušit") { dialogInterface, _ ->
+                dialogInterface.dismiss()
+            }
+            .create()
+
+        dialog.show()
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

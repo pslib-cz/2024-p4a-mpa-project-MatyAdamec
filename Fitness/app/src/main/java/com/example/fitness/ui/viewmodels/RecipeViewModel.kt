@@ -89,4 +89,21 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
             loadRecipes()
         }
     }
+
+    fun addRecipe(recipe: Recipe, ingredients: List<String>) {
+        viewModelScope.launch {
+            repository.insertRecipe(recipe, ingredients)
+            Log.d("RecipeViewModel", "Added recipe: ${recipe.name}")
+            loadRecipes()
+        }
+    }
+
+    fun updateRecipe(recipe: Recipe, ingredients: List<String>) {
+        viewModelScope.launch {
+            repository.updateRecipe(recipe, ingredients)
+            Log.d("RecipeViewModel", "Updated recipe: ${recipe.name}")
+            loadRecipes()
+            loadRecipeWithIngredients(recipe.recipeId) // Přidáno pro znovunačtení aktuálního receptu
+        }
+    }
 }
