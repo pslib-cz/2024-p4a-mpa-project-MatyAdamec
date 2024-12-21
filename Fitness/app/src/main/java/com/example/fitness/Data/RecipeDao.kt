@@ -39,4 +39,20 @@ interface RecipeDao {
 
     @Query("DELETE FROM recipe_ingredient_cross_ref WHERE recipeId = :id")
     suspend fun deleteRecipeIngredientCrossRefs(id: Long)
+
+    @Query("SELECT * FROM ingredients WHERE name = :name LIMIT 1")
+    suspend fun getIngredientByName(name: String): Ingredient?
+
+    // Nová metoda pro filtrování receptů podle ingrediencí
+    @Transaction
+    @Query("""
+        SELECT DISTINCT recipes.* FROM recipes
+        INNER JOIN recipe_ingredient_cross_ref ON recipes.recipeId = recipe_ingredient_cross_ref.recipeId
+        INNER JOIN ingredients ON recipe_ingredient_cross_ref.ingredientId = ingredients.ingredientId
+        WHERE ingredients.name IN (:ingredientNames)
+        GROUP BY recipes.recipeId
+        HAVING COUNT(DISTINCT ingredients.name) = :ingredientCount
+    """)
+    suspend fun filterRecipesByIngredients(ingredientNames: List<String>, ingredientCount: Int): List<RecipeWithIngredients>
+
 }

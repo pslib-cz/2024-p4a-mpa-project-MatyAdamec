@@ -1,6 +1,7 @@
 package com.example.fitness.repository
 
 
+import android.util.Log
 import com.example.fitness.Data.RecipeDao
 import com.example.fitness.Data.entities.Ingredient
 import com.example.fitness.Data.entities.Recipe
@@ -10,8 +11,6 @@ import com.example.fitness.Data.relations.RecipeWithIngredients
 class RecipeRepository(private val recipeDao: RecipeDao) {
 
     suspend fun getAllRecipes(): List<Recipe> {
-        // V reálné aplikaci lze přidat caching, filtraci atd.
-        // Zde zjednodušeně pouze načteme všechno.
         val allRecipesWithIng = recipeDao.getAllRecipesWithIngredients()
         return allRecipesWithIng.map { it.recipe }
     }
@@ -29,11 +28,42 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
         recipeDao.deleteRecipeById(recipeId)
     }
 
+    suspend fun filterRecipesByIngredients(ingredientNames: List<String>): List<Recipe> {
+        if (ingredientNames.isEmpty()) {
+            return getAllRecipes()
+        }
+        val recipesWithIngredients = recipeDao.filterRecipesByIngredients(ingredientNames, ingredientNames.size)
+        return recipesWithIngredients.map { it.recipe }
+    }
 
     suspend fun searchRecipes(query: String): List<Recipe> {
         val searchQuery = "%$query%"
         val recipesWithIngredients = recipeDao.searchRecipesWithIngredients(searchQuery)
         return recipesWithIngredients.map { it.recipe }
+    }
+
+    suspend fun filterAndSearchRecipes(ingredientNames: List<String>, query: String?): List<Recipe> {
+        if (ingredientNames.isEmpty() && query.isNullOrEmpty()) {
+            return getAllRecipes()
+        }
+        if (!query.isNullOrEmpty() && ingredientNames.isEmpty()) {
+            return searchRecipes(query)
+        }
+
+        if (query.isNullOrEmpty() && ingredientNames.isNotEmpty()) {
+            return filterRecipesByIngredients(ingredientNames)
+        }
+
+        if (!query.isNullOrEmpty() && ingredientNames.isNotEmpty()) {
+            val ingredientFilteredRecipes = filterRecipesByIngredients(ingredientNames)
+            val searchFilteredRecipes = searchRecipes(query)
+
+            val combinedRecipes = ingredientFilteredRecipes.intersect(searchFilteredRecipes).toList()
+
+            return combinedRecipes
+        }
+
+        return emptyList()
     }
 
     suspend fun insertSampleData() {
@@ -93,7 +123,7 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
     private suspend fun insertIngredientsForRecipe(recipeId: Long, ingredients: List<String>) {
 
         for (ingredientName in ingredients) {
-            val ingredientId = recipeDao.insertIngredient(Ingredient(name = ingredientName))
+            val ingredientId = recipeDao.getIngredientByName(ingredientName)?.ingredientId ?: recipeDao.insertIngredient(Ingredient(name = ingredientName))
             recipeDao.insertRecipeIngredientCrossRef(RecipeIngredientCrossRef(recipeId, ingredientId))
         }
 

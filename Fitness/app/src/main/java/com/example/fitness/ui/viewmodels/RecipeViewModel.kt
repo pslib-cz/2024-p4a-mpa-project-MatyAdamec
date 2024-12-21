@@ -21,11 +21,22 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
     private val _searchResults = MutableStateFlow<List<Recipe>>(emptyList())
     val searchResults: StateFlow<List<Recipe>> = _searchResults
 
+    private val _filteredRecipes = MutableStateFlow<List<Recipe>>(emptyList())
+    val filteredRecipes: StateFlow<List<Recipe>> = _filteredRecipes
+
+    private val _selectedIngredients = MutableStateFlow<List<String>>(emptyList())
+    val selectedIngredients: StateFlow<List<String>> = _selectedIngredients
+
+    private val _combinedResults = MutableStateFlow<List<Recipe>>(emptyList())
+    val combinedResults: StateFlow<List<Recipe>> = _combinedResults
+
+
     fun loadRecipes() {
         viewModelScope.launch {
             val data = repository.getAllRecipes()
             _searchResults.value = data
             _recipes.value = data
+            _combinedResults.value = data
         }
     }
 
@@ -48,6 +59,28 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
             }
         }
     }
+
+    fun filterRecipesByIngredients(ingredientNames: List<String>) {
+        viewModelScope.launch {
+            val filtered = repository.filterRecipesByIngredients(ingredientNames)
+            Log.d("RecipeViewModel", "Filtered recipes: ${filtered.size} recipes")
+            _filteredRecipes.value = filtered
+            _selectedIngredients.value = ingredientNames
+            // Clear search results if filtering is active
+            _searchResults.value = emptyList()
+        }
+    }
+
+    fun filterAndSearchRecipes(ingredientNames: List<String>, query: String?) {
+        viewModelScope.launch {
+            //Log.d("RecipeListFragment", "query: $query, ingredients: $ingredientNames")
+            val results = repository.filterAndSearchRecipes(ingredientNames, query)
+            //Log.d("RecipeListFragment", "results: $results")
+            _combinedResults.value = results
+            _selectedIngredients.value = ingredientNames
+        }
+    }
+
 
     fun deleteRecipe(recipeId: Long) {
         viewModelScope.launch {
