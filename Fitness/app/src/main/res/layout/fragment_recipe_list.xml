@@ -1,36 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/headingTextView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:queryHint="Hledat recepty..." />
+        android:text="MyRecipes"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:background="#40E0D0"
+        android:padding="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Tlačítko pro filtrování podle ingrediencí -->
-
-    <Button
-        android:id="@+id/filterButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/searchFilterLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:layout_marginTop="8dp"
-        android:backgroundTint="@color/design_default_color_primary"
-        android:text="Filtrovat podle ingrediencí"
-        android:textColor="@android:color/white"
-        android:translationY="120px" />
+        app:layout_constraintTop_toBottomOf="@id/headingTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <!-- ChipGroup pro zobrazení vybraných ingrediencí -->
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:iconifiedByDefault="false"
+            android:queryHint="Hledat recepty..." />
+
+        <ImageButton
+            android:id="@+id/filterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Filtrovat podle ingrediencí"
+            android:src="@drawable/ic_filter_list"
+            app:tint="@color/black" />
+    </LinearLayout>
+
     <HorizontalScrollView
-        android:layout_width="match_parent"
+        android:id="@+id/ingredientsList"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:overScrollMode="always"
         android:scrollbars="horizontal"
-        android:translationY="240px">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchFilterLayout">
+
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/selectedIngredientsChipGroup"
@@ -39,24 +71,39 @@
             android:singleLine="true"
             app:singleSelection="false" />
     </HorizontalScrollView>
-
+<!--
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/selectedIngredientsChipGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/searchFilterLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:singleSelection="false"
+        app:chipSpacing="8dp"
+        app:singleLine="false"
+        android:visibility="gone" />
+-->
     <ListView
         android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="600dp"
-        android:translationY="360px" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/ingredientsList"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-    <!-- FloatingActionButton pro přidání nového receptu -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addRecipeFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
         android:contentDescription="Přidat Recept"
         android:src="@drawable/ic_add"
-        android:translationX="700px"
-        android:translationY="600dp"
-        app:backgroundTint="@color/design_default_color_primary" />
-</FrameLayout>
+        app:backgroundTint="#3FDECE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
