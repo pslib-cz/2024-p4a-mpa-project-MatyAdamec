@@ -40,6 +40,19 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
         }
     }
 
+    fun getRecipesEmpty(){
+        viewModelScope.launch {
+            val data = repository.getAllRecipes()
+            Log.d("RecipeListFragment", "Start loaded all ${data.size}")
+
+            if (data.isEmpty()) {
+                Log.d("RecipeListFragment", "LOADING SAMPLE DATA FROM REPO ${recipes.value.isEmpty()}")
+                repository.insertSampleData()
+                loadRecipes()
+            }
+        }
+    }
+
     fun loadRecipeWithIngredients(recipeId: Long) {
         viewModelScope.launch {
             val recipe = repository.getRecipeWithIngredients(recipeId)

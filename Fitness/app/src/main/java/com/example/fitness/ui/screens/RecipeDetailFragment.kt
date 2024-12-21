@@ -53,9 +53,7 @@ class RecipeDetailFragment : Fragment() {
 
         if (recipeId != -1L) {
             viewModel.loadRecipeWithIngredients(recipeId)
-        } else {
-            Toast.makeText(requireContext(), "Recept nenalezen", Toast.LENGTH_SHORT).show()
-        }
+        } 
 
         // Pozorování vybraného receptu
         viewLifecycleOwner.lifecycleScope.launch {
@@ -65,10 +63,7 @@ class RecipeDetailFragment : Fragment() {
                     binding.recipeDescription.text = recipeWithIngredients.recipe.description
                     binding.ingredientsList.text = recipeWithIngredients.ingredients.joinToString(", ") { it.name }
                     Log.d("RecipeDetailFragment", "Loaded recipe: ${recipeWithIngredients.recipe.name}")
-                } else {
-                    Toast.makeText(requireContext(), "Recept nenalezen", Toast.LENGTH_SHORT).show()
-                    Log.e("RecipeDetailFragment", "Recept nenalezen")
-                }
+                } 
             }
         }
 

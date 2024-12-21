@@ -133,15 +133,11 @@ class RecipeListFragment : Fragment() {
         }
 
         // Vložení ukázkových dat při prvním spuštění
-        /*
+
         viewLifecycleOwner.lifecycleScope.launch {
-            if (viewModel.recipes.value.isEmpty()) {
-                Log.d("RecipeListFragment", "Inserting sample data")
-                repository.insertSampleData()
-                viewModel.loadRecipes()
-            }
+            viewModel.getRecipesEmpty()
         }
-        */
+
     }
     private fun updateSelectedIngredientsDisplay(selectedIngredients: List<String>) {
         binding.selectedIngredientsChipGroup.removeAllViews()

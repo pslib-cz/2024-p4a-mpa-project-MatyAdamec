@@ -10,7 +10,7 @@
         android:id="@+id/headingTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="MyRecipes"
+        android:text="Moje Recepty"
         android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
