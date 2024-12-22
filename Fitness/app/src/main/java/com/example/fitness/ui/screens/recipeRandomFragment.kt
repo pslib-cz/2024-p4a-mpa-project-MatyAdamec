@@ -1,6 +1,7 @@
 package com.example.fitness.ui.screens
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import kotlin.reflect.full.memberProperties
 
 class RecipeRandomFragment : Fragment() {
 
@@ -54,6 +56,12 @@ class RecipeRandomFragment : Fragment() {
                 val meal = response.meals.firstOrNull()
                 withContext(Dispatchers.Main) {
                     if (meal != null) {
+                        Log.d("RecipeRandomFragment", "MEAL mealNameTextView: ${meal.strMeal}")
+                        Log.d("RecipeRandomFragment", "MEAL mealCategoryTextView: ${meal.strCategory}")
+                        Log.d("RecipeRandomFragment", "MEAL mealAreaTextView: ${meal.strArea}")
+                        Log.d("RecipeRandomFragment", "MEAL mealInstructionsTextView: ${meal.strInstructions}")
+                        Log.d("RecipeRandomFragment", "MEAL strMealThumb: ${meal.strInstructions}")
+                        Log.d("RecipeRandomFragment", "MEAL mealInstructionsTextView: ${meal.strMealThumb}")
                         binding.mealNameTextView.text = meal.strMeal
                         binding.mealCategoryTextView.text = "Category: ${meal.strCategory}"
                         binding.mealAreaTextView.text = "Area: ${meal.strArea}"
@@ -76,15 +84,29 @@ class RecipeRandomFragment : Fragment() {
 
     private fun getIngredients(meal: Meal): String {
         val ingredients = mutableListOf<String>()
-        for (i in 1..20) {
-            val ingredient = meal::class.java.getDeclaredField("strIngredient$i").get(meal) as String?
-            val measure = meal::class.java.getDeclaredField("strMeasure$i").get(meal) as String?
-            if (!ingredient.isNullOrEmpty()) {
-                ingredients.add("${measure?.trim() ?: ""} ${ingredient.trim()}")
+        try {
+            for (i in 1..20) {
+                Log.d("RecipeRandomFragment", "MEAL ingredient start for index $i")
+                val ingredient = meal::class.memberProperties
+                    .find { it.name == "strIngredient$i" }
+                    ?.getter
+                    ?.call(meal) as? String
+                Log.d("RecipeRandomFragment", "MEAL ingredient: $ingredient")
+                val measure = meal::class.memberProperties
+                    .find { it.name == "strMeasure$i" }
+                    ?.getter
+                    ?.call(meal) as? String
+                Log.d("RecipeRandomFragment", "MEAL measure: $measure")
+                if (!ingredient.isNullOrBlank()) {
+                    ingredients.add("${measure?.trim() ?: ""} ${ingredient.trim()}".trim())
+                }
             }
+        } catch (e: Exception) {
+            Log.e("RecipeRandomFragment", "Error parsing ingredients", e)
         }
         return ingredients.joinToString("\n")
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

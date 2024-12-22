@@ -70,5 +70,6 @@ dependencies {
 
     implementation(libs.glide)
 
+    implementation(libs.kotlin.reflect)
 
 }

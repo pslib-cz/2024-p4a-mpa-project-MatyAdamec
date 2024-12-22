@@ -246,7 +246,7 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
 
         // Recept 30: Tvarohový koláč
         val recipe30Id = recipeDao.insertRecipe(Recipe(name = "Tvarohový koláč", description = "Sladký koláč s tvarohovou náplní a ovocem."))
-        val recipe30Ingredients = listOf("Mouka", "Máslo", "Vejce", "Cukr", "Tvaroh", "Vanilka", "Citrónová šťáva", "Ovoce")
+        val recipe30Ingredients = listOf("Mouka", "Máslo", "Vejce", "Cukr", "Tvaroh", "Vanilka", "Citronová šťáva", "Ovoce")
         insertIngredientsForRecipe(recipe30Id, recipe30Ingredients)
     }
 
