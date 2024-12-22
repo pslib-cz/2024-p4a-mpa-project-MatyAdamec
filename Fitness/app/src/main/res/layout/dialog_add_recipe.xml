@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Vstupní pole pro název receptu -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/recipeNameInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Název receptu">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/recipeNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Vstupní pole pro popis receptu -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/recipeDescriptionInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Popis receptu">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/recipeDescriptionEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Vstupní pole pro výběr ingrediencí -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/recipeIngredientsInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Ingredience (oddělené čárkou)">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/recipeIngredientsEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+</ScrollView>
