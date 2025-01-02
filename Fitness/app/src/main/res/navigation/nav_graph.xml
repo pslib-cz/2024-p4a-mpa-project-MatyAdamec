@@ -34,6 +34,13 @@
         <argument
             android:name="recipeId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_recipeDetailFragment_to_recipeListFragment"
+            app:destination="@id/recipeListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -41,6 +48,13 @@
         android:name="com.example.fitness.ui.screens.RecipeRandomFragment"
         android:label="Recipe Random"
         tools:layout="@layout/fragment_recipe_random">
+        <action
+            android:id="@+id/action_recipeRandomFragment_to_recipeListFragment"
+            app:destination="@id/recipeListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="recipeId"
             app:argType="long" />

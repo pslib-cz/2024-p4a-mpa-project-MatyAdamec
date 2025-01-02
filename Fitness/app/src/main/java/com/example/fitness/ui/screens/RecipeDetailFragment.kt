@@ -83,6 +83,10 @@ class RecipeDetailFragment : Fragment() {
                 Toast.makeText(requireContext(), "Neplatný ID receptu", Toast.LENGTH_SHORT).show()
             }
         }
+
+        binding.menuButton.setOnClickListener {
+            findNavController().navigate(R.id.action_recipeDetailFragment_to_recipeListFragment)
+        }
     }
 
     private fun confirmDeleteRecipe(recipeId: Long) {

@@ -6,6 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/menuButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/ic_back"
+        app:tint="@color/black"
+        app:backgroundTint="#3FDECE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
@@ -61,7 +72,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16sp"
-        app:layout_constraintTop_toBottomOf="@id/recipeName">
+        app:layout_constraintTop_toBottomOf="@id/recipeName"
+        tools:ignore="MissingConstraints">
 
         <TextView
             android:id="@+id/recipeDescription"
