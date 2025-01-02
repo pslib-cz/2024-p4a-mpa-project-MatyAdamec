@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Moje Recepty</string>
+    <string name="random_recipe">Náhodný recept</string>
+    <string name="meal_name">Název jídla</string>
+    <string name="category">Kategorie:</string>
+    <string name="area">Oblast:</string>
+    <string name="meal_image">Obrázek jídla</string>
+    <string name="instructions">Instrukce</string>
+    <string name="ingredients">Ingredience</string>
+    <string name="random_recipes">Náhodné recepty</string>
+    <string name="back_to_recipe_list">Zpět na seznam receptů</string>
+    <string name="recipe_name">Název receptu</string>
+    <string name="delete_recipe">Smazat recept</string>
+    <string name="modify_recipe">Upravit recept</string>
+    <string name="recipe_description">Popis receptu</string>
+    <string name="my_recipes">Moje recepty</string>
+    <string name="filter_by_ingredients">Filtrovat podle ingrediencí</string>
+    <string name="add_recipe">Přidat recept</string>
+    <string name="ingredients_separated_by_a_comma">Ingredience (oddělené čárkou \',\')</string>
+</resources>

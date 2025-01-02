@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">fitness</string>
+    <string name="app_name">My Recipe Book</string>
     <string name="random_recipe">Random recipe</string>
     <string name="meal_name">Meal Name</string>
     <string name="category">Category:</string>
