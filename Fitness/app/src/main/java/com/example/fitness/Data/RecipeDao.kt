@@ -46,7 +46,6 @@ interface RecipeDao {
     @Query("SELECT * FROM ingredients WHERE name = :name LIMIT 1")
     suspend fun getIngredientByName(name: String): Ingredient?
 
-    // Nová metoda pro filtrování receptů podle ingrediencí
     @Transaction
     @Query("""
         SELECT DISTINCT recipes.* FROM recipes

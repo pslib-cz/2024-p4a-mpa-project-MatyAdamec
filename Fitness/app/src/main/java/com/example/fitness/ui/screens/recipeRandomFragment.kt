@@ -45,7 +45,6 @@ class RecipeRandomFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         fetchRandomMeal()
 
-        // Nastavení obsluhy tlačítka pro načtení nového receptu
         binding.newMealButton.setOnClickListener {
             fetchRandomMeal()
         }

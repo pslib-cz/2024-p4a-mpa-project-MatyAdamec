@@ -10,8 +10,9 @@
         android:id="@+id/menuButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
+        android:contentDescription="@string/back_to_recipe_list"
         android:src="@drawable/ic_back"
         app:backgroundTint="#3FDECE"
         app:tint="@color/black"
@@ -23,7 +24,7 @@
         android:id="@+id/randomHeading"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Random recipe"
+        android:text="@string/random_recipe"
         android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -55,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingBottom="8dp"
-                android:text="Meal Name"
+                android:text="@string/meal_name"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -64,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="4dp"
-                android:text="Category: "
+                android:text="@string/category"
                 android:textSize="16sp" />
 
             <TextView
@@ -72,14 +73,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="8dp"
-                android:text="Area: "
+                android:text="@string/area"
                 android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/mealImageView"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:contentDescription="Meal Image"
+                android:contentDescription="@string/meal_image"
                 android:paddingBottom="8dp"
                 android:scaleType="centerCrop" />
 
@@ -88,14 +89,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="8dp"
-                android:text="Instructions"
+                android:text="@string/instructions"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/ingredientsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ingredients"
+                android:text="@string/ingredients"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -106,7 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:contentDescription="Random Recipes"
+        android:contentDescription="@string/random_recipes"
         android:src="@drawable/ic_refresh"
         app:backgroundTint="#3FDECE"
         app:layout_constraintBottom_toBottomOf="parent"

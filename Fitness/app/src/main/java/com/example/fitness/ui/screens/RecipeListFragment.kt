@@ -54,26 +54,21 @@ class RecipeListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Načtení receptů
         viewModel.loadRecipes()
 
-        // Vytvoření adapteru pro ListView
         adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, mutableListOf())
         binding.listView.adapter = adapter
 
-        // Nastavení kliknutí na položku seznamu
         binding.listView.setOnItemClickListener { _, _, position, _ ->
             val selectedRecipe = viewModel.combinedResults.value[position]
             //Toast.makeText(requireContext(), "Kliknuto na ${selectedRecipe.name}", Toast.LENGTH_SHORT).show()
 
-            // Vytvoření bundle a navigace
             val bundle = Bundle().apply {
                 putLong("recipeId", selectedRecipe.recipeId)
             }
             findNavController().navigate(R.id.action_recipeListFragment_to_recipeDetailFragment, bundle)
         }
 
-        // Nastavení SearchView pro vyhledávání receptů
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -86,7 +81,6 @@ class RecipeListFragment : Fragment() {
         })
 
 
-        // Nastavení FloatingActionButton pro přidání nového receptu
         binding.addRecipeFab.setOnClickListener {
             showAddRecipeDialog()
         }
@@ -98,14 +92,12 @@ class RecipeListFragment : Fragment() {
             findNavController().navigate(R.id.action_recipeListFragment_to_recipeRandomFragment)
         }
 
-        // Pozorování vybraných ingrediencí
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.selectedIngredients.collectLatest { selectedIngredients ->
                 updateSelectedIngredientsDisplay(selectedIngredients)
             }
         }
 /*
-        // Pozorování filtrovaných receptů
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.filteredRecipes.collectLatest { filteredList ->
                 if (filteredList.isNotEmpty()) {
@@ -116,7 +108,6 @@ class RecipeListFragment : Fragment() {
                 }
             }
         }
-        // Pozorování výsledků vyhledávání
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.searchResults.collectLatest { searchList ->
                 adapter.clear()
@@ -126,7 +117,6 @@ class RecipeListFragment : Fragment() {
             }
         }*/
 
-        // Observe combined results
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.combinedResults.collectLatest { combinedList ->
                 adapter.clear()
@@ -135,8 +125,6 @@ class RecipeListFragment : Fragment() {
                 Log.d("RecipeListFragment", "Combined results updated: ${combinedList.size} items")
             }
         }
-
-        // Vložení ukázkových dat při prvním spuštění
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.getRecipesEmpty()
@@ -165,7 +153,6 @@ class RecipeListFragment : Fragment() {
             val ingredients = repository.getAllIngredients().map { it.name }.sorted()
             val selectedIngredients = BooleanArray(ingredients.size) { false }
 
-            // Pre-select currently selected ingredients
             val currentSelected = viewModel.selectedIngredients.value
             currentSelected.forEach { ingredient ->
                 val index = ingredients.indexOf(ingredient)
@@ -175,16 +162,16 @@ class RecipeListFragment : Fragment() {
             }
 
             AlertDialog.Builder(requireContext())
-                .setTitle("Filtrovat podle ingrediencí")
+                .setTitle("Filter by Ingredients")
                 .setMultiChoiceItems(ingredients.toTypedArray(), selectedIngredients) { _, which, isChecked ->
                     selectedIngredients[which] = isChecked
                 }
-                .setPositiveButton("Filtrovat") { dialog, _ ->
+                .setPositiveButton("Filter") { dialog, _ ->
                     val selectedList = ingredients.filterIndexed { index, _ -> selectedIngredients[index] }
                     viewModel.filterAndSearchRecipes(selectedList, binding.searchView.query.toString())
                     dialog.dismiss()
                 }
-                .setNegativeButton("Zrušit") { dialog, _ ->
+                .setNegativeButton("Cancel") { dialog, _ ->
                     dialog.dismiss()
                 }
                 .create()
@@ -196,20 +183,20 @@ class RecipeListFragment : Fragment() {
         val dialogBinding = DialogAddRecipeBinding.inflate(LayoutInflater.from(context))
 
         val dialog = AlertDialog.Builder(requireContext())
-            .setTitle("Přidat nový recept")
+            .setTitle("Add new Recipe")
             .setView(dialogBinding.root)
-            .setPositiveButton("Přidat") { dialogInterface, _ ->
+            .setPositiveButton("Add") { dialogInterface, _ ->
                 val recipeName = dialogBinding.recipeNameEditText.text.toString().trim()
                 val recipeDescription = dialogBinding.recipeDescriptionEditText.text.toString().trim()
                 val recipeIngredientsInput = dialogBinding.recipeIngredientsEditText.text.toString().trim()
 
                 if (recipeName.isEmpty()) {
-                    Toast.makeText(requireContext(), "Název receptu je povinný.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Recipe name can't be empty.", Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
 
                 if (recipeIngredientsInput.isEmpty()) {
-                    Toast.makeText(requireContext(), "Ingredience jsou povinné.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Ingredients can't be empty.", Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
 
@@ -224,7 +211,7 @@ class RecipeListFragment : Fragment() {
 
                 dialogInterface.dismiss()
             }
-            .setNegativeButton("Zrušit") { dialogInterface, _ ->
+            .setNegativeButton("Cancel") { dialogInterface, _ ->
                 dialogInterface.dismiss()
             }
             .create()

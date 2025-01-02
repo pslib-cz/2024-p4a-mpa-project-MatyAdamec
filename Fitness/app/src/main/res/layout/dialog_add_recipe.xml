@@ -9,12 +9,11 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Vstupní pole pro název receptu -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/recipeNameInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Název receptu">
+            android:hint="@string/recipe_name">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/recipeNameEditText"
@@ -23,13 +22,12 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Vstupní pole pro popis receptu -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/recipeDescriptionInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Popis receptu">
+            android:hint="@string/recipe_description">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/recipeDescriptionEditText"
@@ -38,13 +36,12 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Vstupní pole pro výběr ingrediencí -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/recipeIngredientsInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Ingredience (oddělené čárkou)">
+            android:hint="@string/ingredients_separated_by_a_comma">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/recipeIngredientsEditText"

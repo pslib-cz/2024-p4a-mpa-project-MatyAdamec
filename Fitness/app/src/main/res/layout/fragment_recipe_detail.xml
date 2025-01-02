@@ -10,7 +10,8 @@
         android:id="@+id/menuButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:contentDescription="@string/back_to_recipe_list"
         android:layout_marginTop="5dp"
         android:src="@drawable/ic_back"
         app:tint="@color/black"
@@ -23,7 +24,7 @@
         android:id="@+id/recipeName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Recipe Name"
+        android:text="@string/recipe_name"
         android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -47,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:contentDescription="Delete Recipe"
+            android:contentDescription="@string/delete_recipe"
             android:src="@drawable/ic_trash"
             android:backgroundTint="@color/design_default_color_error"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -59,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:contentDescription="Modify Recipe"
+            android:contentDescription="@string/modify_recipe"
             android:src="@drawable/ic_modify"
             android:backgroundTint="@color/design_default_color_primary"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -80,14 +81,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
-            android:text="Recipe Description"
+            android:text="@string/recipe_description"
             android:textSize="16sp" />
 
         <TextView
             android:id="@+id/ingredientsList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ingredients"
+            android:text="@string/ingredients"
             android:textSize="16sp" />
 
 

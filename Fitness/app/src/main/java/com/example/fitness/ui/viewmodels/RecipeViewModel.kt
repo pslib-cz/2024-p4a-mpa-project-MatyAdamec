@@ -79,7 +79,6 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
             Log.d("RecipeViewModel", "Filtered recipes: ${filtered.size} recipes")
             _filteredRecipes.value = filtered
             _selectedIngredients.value = ingredientNames
-            // Clear search results if filtering is active
             _searchResults.value = emptyList()
         }
     }
@@ -116,7 +115,7 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
             repository.updateRecipe(recipe, ingredients)
             Log.d("RecipeViewModel", "Updated recipe: ${recipe.name}")
             loadRecipes()
-            loadRecipeWithIngredients(recipe.recipeId) // Přidáno pro znovunačtení aktuálního receptu
+            loadRecipeWithIngredients(recipe.recipeId)
         }
     }
 }

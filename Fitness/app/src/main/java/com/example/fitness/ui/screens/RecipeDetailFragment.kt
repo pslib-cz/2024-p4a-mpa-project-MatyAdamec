@@ -48,14 +48,12 @@ class RecipeDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Získání recipeId z Bundle
         val recipeId = arguments?.getLong("recipeId") ?: -1L
 
         if (recipeId != -1L) {
             viewModel.loadRecipeWithIngredients(recipeId)
         } 
 
-        // Pozorování vybraného receptu
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.selectedRecipe.collectLatest { recipeWithIngredients ->
                 if (recipeWithIngredients != null) {
@@ -69,10 +67,9 @@ class RecipeDetailFragment : Fragment() {
 
         binding.deleteRecipeButton.setOnClickListener {
             if (recipeId != -1L) {
-                // Potvrzení vymazání
                 confirmDeleteRecipe(recipeId)
             } else {
-                Toast.makeText(requireContext(), "Neplatný ID receptu", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "invalid recipe ID", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -80,7 +77,7 @@ class RecipeDetailFragment : Fragment() {
             if (recipeId != -1L) {
                 showEditRecipeDialog(recipeId)
             } else {
-                Toast.makeText(requireContext(), "Neplatný ID receptu", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "invalid recipe ID", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -91,16 +88,15 @@ class RecipeDetailFragment : Fragment() {
 
     private fun confirmDeleteRecipe(recipeId: Long) {
         val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
-        builder.setTitle("Vymazat Recept")
-        builder.setMessage("Opravdu chcete vymazat tento recept?")
-        builder.setPositiveButton("Ano") { dialog, _ ->
+        builder.setTitle("Delete Recipe")
+        builder.setMessage("Are you sure you want to delete this recipe?")
+        builder.setPositiveButton("Yes") { dialog, _ ->
             viewModel.deleteRecipe(recipeId)
-            Toast.makeText(requireContext(), "Recept vymazán", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Recipe has been Deleted!", Toast.LENGTH_SHORT).show()
             findNavController().navigateUp()
             dialog.dismiss()
         }
-        builder.setNegativeButton("Ne") { dialog, _ ->
-            // Zrušení akce
+        builder.setNegativeButton("No") { dialog, _ ->
             dialog.dismiss()
         }
         builder.create().show()
@@ -108,10 +104,8 @@ class RecipeDetailFragment : Fragment() {
 
 
     private fun showEditRecipeDialog(recipeId: Long) {
-        // Vytvoření bindingu pro dialog
         val dialogBinding = DialogEditRecipeBinding.inflate(LayoutInflater.from(context))
 
-        // Naplnění aktuálními daty receptu
         viewLifecycleOwner.lifecycleScope.launch {
             val recipeWithIngredients = viewModel.selectedRecipe.value
             if (recipeWithIngredients != null) {
@@ -123,45 +117,39 @@ class RecipeDetailFragment : Fragment() {
             }
         }
 
-        // Vytvoření AlertDialog s vlastním layoutem
         val dialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
-            .setTitle("Upravit Recept")
+            .setTitle("Modify Recipe")
             .setView(dialogBinding.root)
-            .setPositiveButton("Upravit") { dialogInterface, _ ->
-                // Získání textu z input fieldů
+            .setPositiveButton("Modify") { dialogInterface, _ ->
                 val recipeName = dialogBinding.editRecipeNameEditText.text.toString().trim()
                 val recipeDescription = dialogBinding.editRecipeDescriptionEditText.text.toString().trim()
                 val recipeIngredientsInput = dialogBinding.editRecipeIngredientsEditText.text.toString().trim()
 
-                // Validace vstupů
                 if (recipeName.isEmpty()) {
-                    Toast.makeText(requireContext(), "Název receptu je povinný.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Recipe name can't be empty", Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
 
                 if (recipeIngredientsInput.isEmpty()) {
-                    Toast.makeText(requireContext(), "Ingredience jsou povinné.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Ingredients can't be empty", Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
 
-                // Rozdělení ingrediencí podle čárky a odstranění mezer
                 val ingredients = recipeIngredientsInput.split(",").map { it.trim() }.filter { it.isNotEmpty() }
 
-                // Vytvoření aktualizovaného Recipe objektu
                 val updatedRecipe = com.example.fitness.Data.entities.Recipe(
                     recipeId = recipeId,
                     name = recipeName,
                     description = recipeDescription
                 )
 
-                // Aktualizace receptu v databázi
                 viewModel.updateRecipe(updatedRecipe, ingredients)
 
-                Toast.makeText(requireContext(), "Recept upraven.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Recipe modified.", Toast.LENGTH_SHORT).show()
 
                 dialogInterface.dismiss()
             }
-            .setNegativeButton("Zrušit") { dialogInterface, _ ->
+            .setNegativeButton("Cancel") { dialogInterface, _ ->
                 dialogInterface.dismiss()
             }
             .create()

@@ -21,17 +21,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Nastavíme layout (musí být vytvořen v res/layout/)
         setContentView(R.layout.activity_main)
 
-        // Inicializace databáze
         db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
             "recipes-db"
         ).build()
 
-        // Ukázka použití v coroutine
         lifecycleScope.launch {
             /*val recipeId = db.recipeDao()
                 .insertRecipe(Recipe(name = "Bábovka", description = "Tradiční bábovka"))
