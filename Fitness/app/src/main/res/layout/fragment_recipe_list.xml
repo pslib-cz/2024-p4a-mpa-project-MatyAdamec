@@ -10,7 +10,7 @@
         android:id="@+id/headingTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Moje Recepty"
+        android:text="My Recipes"
         android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:iconifiedByDefault="false"
-            android:queryHint="Hledat recepty..." />
+            android:queryHint="Search recipe..." />
 
         <ImageButton
             android:id="@+id/filterButton"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Filtrovat podle ingrediencí"
+            android:contentDescription="Filter by Ingredients"
             android:src="@drawable/ic_filter_list"
             app:tint="@color/black" />
     </LinearLayout>
@@ -100,7 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:contentDescription="Přidat Recept"
+        android:contentDescription="Add Recipe"
         android:src="@drawable/ic_add"
         app:backgroundTint="#3FDECE"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="96dp"
-        android:contentDescription="Random Recepty"
+        android:contentDescription="Random recipes"
         android:src="@drawable/ic_random"
         app:backgroundTint="#3FDECE"
         app:layout_constraintBottom_toBottomOf="parent"
