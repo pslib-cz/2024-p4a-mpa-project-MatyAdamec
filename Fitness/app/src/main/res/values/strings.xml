@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">My Recipe Book</string>
+    <string name="random_recipe">Random recipe</string>
+    <string name="meal_name">Meal Name</string>
+    <string name="category">Category:</string>
+    <string name="area">Area:</string>
+    <string name="meal_image">Meal Image</string>
+    <string name="instructions">Instructions</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="random_recipes">Random Recipes</string>
+    <string name="back_to_recipe_list">Back to Recipe List</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="delete_recipe">Delete Recipe</string>
+    <string name="modify_recipe">Modify Recipe</string>
+    <string name="recipe_description">Recipe Description</string>
+    <string name="my_recipes">My Recipes</string>
+    <string name="filter_by_ingredients">Filter by Ingredients</string>
+    <string name="add_recipe">Add Recipe</string>
+    <string name="ingredients_separated_by_a_comma">Ingredients (separated by a comma \',\')</string>
+</resources>
